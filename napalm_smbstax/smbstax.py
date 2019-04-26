@@ -73,3 +73,33 @@ class SMBStaXDriver(NetworkDriver):
             cli_output[com] = output
 
         return cli_output
+
+    def get_arp_table(self):
+        """
+        Return a list of dictionaries having the following set of keys.
+
+        interface (string)
+        mac (string)
+        ip (string)
+        age (float)
+        """
+        arp_table = list()
+
+        output = self.device.send_command('show ip arp')
+        output = output.split('\n')
+
+        for line in output:
+            fields = line.split()
+
+            if len(fields) == 3:
+                address, via, vlan_mac = fields
+                vlan, mac = vlan_mac.split(":")
+                entry = {
+                    'interface': vlan,
+                    'mac': napalm.base.helpers.mac(mac),
+                    'ip': address,
+                    'age': -1
+                }
+                arp_table.append(entry)
+
+        return arp_table
