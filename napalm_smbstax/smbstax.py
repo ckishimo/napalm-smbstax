@@ -143,3 +143,28 @@ class SMBStaXDriver(NetworkDriver):
                     mac_table.append(entry)
 
         return mac_table
+
+    def get_config(self, retrieve=u'all'):
+        """
+        Return the configuration of a device.
+
+        The object returned is a dictionary with a key for each configuration store.
+        """
+        configs = {
+            'startup': '',
+            'running': '',
+            'candidate': '',
+        }
+        # candidate: Device doesnt differentiate between running and startup configuration
+        # this will an empty string
+        if retrieve in ('startup', 'all'):
+            command = 'more flash:startup-config'
+            output = self.device.send_command(command)
+            configs['startup'] = output
+
+        if retrieve in ('running', 'all'):
+            command = 'show running-config'
+            output = self.device.send_command(command)
+            configs['running'] = output
+
+        return configs
