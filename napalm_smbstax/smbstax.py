@@ -26,6 +26,7 @@ from napalm.base.exceptions import (
 )
 import napalm.base.helpers
 
+
 class SMBStaXDriver(NetworkDriver):
     """Napalm driver for Microsemi switches running SMBStaX."""
 
@@ -58,6 +59,17 @@ class SMBStaXDriver(NetworkDriver):
         """Disconnect from the device."""
         self.device.disconnect()
 
-    def get_version(self):
-        """Get the current version from the device."""
-        return self.cli(['show version'])
+    def cli(self, commands):
+        """Run any cli command."""
+        cli_output = dict()
+        if type(commands) is not list:
+            raise TypeError('Please enter a valid list of commands!')
+
+        for com in commands:
+            output = self.device.send_command(com)
+            if ('Invalid input' or 'Incomplete command') in output:
+                raise ValueError('Unable to execute command "{}"'.format(com))
+            cli_output.setdefault(com, {})
+            cli_output[com] = output
+
+        return cli_output
