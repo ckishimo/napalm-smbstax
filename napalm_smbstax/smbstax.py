@@ -103,3 +103,43 @@ class SMBStaXDriver(NetworkDriver):
                 arp_table.append(entry)
 
         return arp_table
+
+    def get_mac_address_table(self):
+        """
+        Return a list of dictionaries.
+
+        Each dictionary represents an entry in the MAC Address Table, having the following keys:
+
+        mac (string)
+        interface (string)
+        vlan (int)
+        active (boolean)
+        static (boolean)
+        moves (int)
+        last_move (float)
+        """
+        mac_table = list()
+
+        output = self.device.send_command('show mac address-table')
+        output = output[1:]
+        output = output.split('\n')
+
+        for line in output:
+            fields = line.split()
+
+            if len(fields) == 5:
+                dynamic, vlan, mac, iface, port = fields
+                # FIXME: Include also static mac entries
+                if 'Dynamic' in dynamic:
+                    entry = {
+                        'interface': iface + port,
+                        'mac': napalm.base.helpers.mac(mac),
+                        'vlan': vlan,
+                        'static': False,
+                        'active': True,
+                        'moves': -1,
+                        'last_move': -1
+                    }
+                    mac_table.append(entry)
+
+        return mac_table
