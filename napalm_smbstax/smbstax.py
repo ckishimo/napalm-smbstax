@@ -21,9 +21,7 @@ Read https://napalm.readthedocs.io for more information.
 
 from netmiko import ConnectHandler
 from napalm.base import NetworkDriver
-from napalm.base.exceptions import (
-   ConnectionException,
-)
+from napalm.base.exceptions import ConnectionException
 import napalm.base.helpers
 
 
@@ -40,20 +38,24 @@ class SMBStaXDriver(NetworkDriver):
         self.username = username
         self.password = password
         self.timeout = timeout
-        self.port = optional_args.get('port', 22)
+        self.port = optional_args.get("port", 22)
 
     def open(self):
         """Connect with the device."""
         try:
-            self.device = ConnectHandler(device_type='cisco_ios_telnet',
-                                         ip=self.hostname,
-                                         port=self.port,
-                                         username=self.username,
-                                         password=self.password,
-                                         timeout=self.timeout,
-                                         verbose=True)
+            self.device = ConnectHandler(
+                device_type="cisco_ios_telnet",
+                ip=self.hostname,
+                port=self.port,
+                username=self.username,
+                password=self.password,
+                timeout=self.timeout,
+                verbose=True,
+            )
         except Exception:
-            raise ConnectionException("Cannot connect to switch: %s:%s" % (self.hostname, self.port))
+            raise ConnectionException(
+                "Cannot connect to switch: %s:%s" % (self.hostname, self.port)
+            )
 
     def close(self):
         """Disconnect from the device."""
@@ -63,11 +65,11 @@ class SMBStaXDriver(NetworkDriver):
         """Run any cli command."""
         cli_output = dict()
         if type(commands) is not list:
-            raise TypeError('Please enter a valid list of commands!')
+            raise TypeError("Please enter a valid list of commands!")
 
         for com in commands:
             output = self.device.send_command(com)
-            if ('Invalid input' or 'Incomplete command') in output:
+            if ("Invalid input" or "Incomplete command") in output:
                 raise ValueError('Unable to execute command "{}"'.format(com))
             cli_output.setdefault(com, {})
             cli_output[com] = output
@@ -85,8 +87,8 @@ class SMBStaXDriver(NetworkDriver):
         """
         arp_table = list()
 
-        output = self.device.send_command('show ip arp')
-        output = output.split('\n')
+        output = self.device.send_command("show ip arp")
+        output = output.split("\n")
 
         for line in output:
             fields = line.split()
@@ -95,10 +97,10 @@ class SMBStaXDriver(NetworkDriver):
                 address, via, vlan_mac = fields
                 vlan, mac = vlan_mac.split(":")
                 entry = {
-                    'interface': vlan,
-                    'mac': napalm.base.helpers.mac(mac),
-                    'ip': address,
-                    'age': -1
+                    "interface": vlan,
+                    "mac": napalm.base.helpers.mac(mac),
+                    "ip": address,
+                    "age": -1,
                 }
                 arp_table.append(entry)
 
@@ -120,9 +122,9 @@ class SMBStaXDriver(NetworkDriver):
         """
         mac_table = list()
 
-        output = self.device.send_command('show mac address-table')
+        output = self.device.send_command("show mac address-table")
         output = output[1:]
-        output = output.split('\n')
+        output = output.split("\n")
 
         for line in output:
             fields = line.split()
@@ -130,41 +132,37 @@ class SMBStaXDriver(NetworkDriver):
             if len(fields) == 5:
                 dynamic, vlan, mac, iface, port = fields
                 # FIXME: Include also static mac entries
-                if 'Dynamic' in dynamic:
+                if "Dynamic" in dynamic:
                     entry = {
-                        'interface': iface + port,
-                        'mac': napalm.base.helpers.mac(mac),
-                        'vlan': vlan,
-                        'static': False,
-                        'active': True,
-                        'moves': -1,
-                        'last_move': -1
+                        "interface": iface + port,
+                        "mac": napalm.base.helpers.mac(mac),
+                        "vlan": vlan,
+                        "static": False,
+                        "active": True,
+                        "moves": -1,
+                        "last_move": -1,
                     }
                     mac_table.append(entry)
 
         return mac_table
 
-    def get_config(self, retrieve=u'all'):
+    def get_config(self, retrieve=u"all"):
         """
         Return the configuration of a device.
 
         The object returned is a dictionary with a key for each configuration store.
         """
-        configs = {
-            'startup': '',
-            'running': '',
-            'candidate': '',
-        }
+        configs = {"startup": "", "running": "", "candidate": ""}
         # candidate: Device doesnt differentiate between running and startup configuration
         # this will an empty string
-        if retrieve in ('startup', 'all'):
-            command = 'more flash:startup-config'
+        if retrieve in ("startup", "all"):
+            command = "more flash:startup-config"
             output = self.device.send_command(command)
-            configs['startup'] = output
+            configs["startup"] = output
 
-        if retrieve in ('running', 'all'):
-            command = 'show running-config'
+        if retrieve in ("running", "all"):
+            command = "show running-config"
             output = self.device.send_command(command)
-            configs['running'] = output
+            configs["running"] = output
 
         return configs

@@ -19,4 +19,4 @@ Napalm driver for Microsemi switches running SMBStaX.
 
 from napalm_smbstax.smbstax import SMBStaXDriver
 
-__all__ = ('SMBStaXDriver',)
+__all__ = ("SMBStaXDriver",)
