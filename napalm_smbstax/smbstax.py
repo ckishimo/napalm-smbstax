@@ -248,6 +248,9 @@ class SMBStaXDriver(NetworkDriver):
         return output
 
     def get_lldp_neighbors(self):
+        raise NotImplemented
+
+    def get_lldp_neighbors_detail(self):
         """
         Returns a detailed view of the LLDP neighbors as a dictionary containing
         lists of dictionaries for each interface.
@@ -274,9 +277,6 @@ class SMBStaXDriver(NetworkDriver):
                 output[iface]["remote_system_enable_capab"] = ""
 
         return output
-
-    def get_lldp_neighbors_detail(self):
-        raise NotImplemented
 
     def traceroute(self):
         raise NotImplemented
