@@ -248,11 +248,35 @@ class SMBStaXDriver(NetworkDriver):
         return output
 
     def get_lldp_neighbors(self):
-        raise NotImplemented
+        """
+        Returns a detailed view of the LLDP neighbors as a dictionary containing
+        lists of dictionaries for each interface.
+        """
+        output = {}
+        _data = napalm.base.helpers.textfsm_extractor(
+            self, "lldp-neighbors", self.device.send_command("show lldp neighbors")
+        )
+        if _data:
+            for neighbor in _data:
+                iface = neighbor["local_interface"]
+                output[iface] = {}
+                output[iface]["parent_interface"] = ""
+                output[iface]["remote_chassis_id"] = neighbor["remote_chassis_id"]
+                output[iface]["remote_system_name"] = neighbor["remote_system_name"]
+                output[iface]["remote_port"] = neighbor["remote_port"]
+                output[iface]["remote_port_description"] = neighbor[
+                    "remote_port_description"
+                ]
+                output[iface]["remote_system_description"] = neighbor[
+                    "remote_system_description"
+                ]
+                output[iface]["remote_system_capab"] = neighbor["remote_system_capab"]
+                output[iface]["remote_system_enable_capab"] = ""
+
+        return output
 
     def get_lldp_neighbors_detail(self):
         raise NotImplemented
-
 
     def traceroute(self):
         raise NotImplemented
@@ -325,9 +349,6 @@ class SMBStaXDriver(NetworkDriver):
 
     def discard_config(self):
         raise NotImplemented
-
-
-
 
     def get_firewall_policies(self):
         raise NotImplemented
