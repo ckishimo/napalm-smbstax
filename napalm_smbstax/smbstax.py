@@ -83,7 +83,7 @@ class SMBStaXDriver(NetworkDriver):
         interface (string)
         mac (string)
         ip (string)
-        age (float)
+        age (float)         : Not supported
         """
         arp_table = list()
 
@@ -116,9 +116,9 @@ class SMBStaXDriver(NetworkDriver):
         interface (string)
         vlan (int)
         active (boolean)
-        static (boolean)
-        moves (int)
-        last_move (float)
+        static (boolean)    : Not implemented
+        moves (int)         : Not supported
+        last_move (float)   : Not supported
         """
         mac_table = list()
 
@@ -150,10 +150,10 @@ class SMBStaXDriver(NetworkDriver):
         """
         Return the configuration of a device.
 
-        The object returned is a dictionary with a key for each configuration store.
+        The object returned is a dictionary with a key for each configuration stored.
         """
         configs = {"startup": "", "running": "", "candidate": ""}
-        # candidate: Device doesnt differentiate between running and startup configuration
+        # Candidate: Device doesn't differentiate between running and startup configuration
         # this will an empty string
         if retrieve in ("startup", "all"):
             command = "more flash:startup-config"
