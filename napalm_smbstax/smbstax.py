@@ -171,12 +171,6 @@ class SMBStaXDriver(NetworkDriver):
 
         return configs
 
-    def get_probes_results(self):
-        raise NotImplemented
-
-    def get_probes_config(self):
-        raise NotImplemented
-
     def get_optics(self):
         """
         Fetches the power usage on the various transceivers installed.
@@ -230,27 +224,64 @@ class SMBStaXDriver(NetworkDriver):
         output = {}
 
         _data = napalm.base.helpers.textfsm_extractor(
-            self,
-            "statistics",
-            self.device.send_command("show interface * statistics"),
+            self, "statistics", self.device.send_command("show interface * statistics")
         )
         if _data:
             for iface in _data:
-                name =iface['interface']
+                name = iface["interface"]
 
                 output[name] = {}
-                output[name]['tx_multicast_packets'] = iface['tx_multicast']
-                output[name]['rx_multicast_packets'] = iface['rx_multicast']
-                output[name]['tx_broadcast_packets'] = iface['tx_broadcast']
-                output[name]['rx_broadcast_packets'] = iface['rx_broadcast']
-                output[name]['tx_unicast_packets'] = iface['tx_octets']
-                output[name]['rx_unicast_packets'] = iface['rx_octets']
+                output[name]["tx_multicast_packets"] = iface["tx_multicast"]
+                output[name]["rx_multicast_packets"] = iface["rx_multicast"]
+                output[name]["tx_broadcast_packets"] = iface["tx_broadcast"]
+                output[name]["rx_broadcast_packets"] = iface["rx_broadcast"]
+                output[name]["tx_unicast_packets"] = iface["tx_octets"]
+                output[name]["rx_unicast_packets"] = iface["rx_octets"]
                 # FIXME: drops ?
-                output[name]['tx_discards'] = 0
-                output[name]['rx_discards'] = 0
-                output[name]['tx_errors'] = -1
-                output[name]['rx_errors'] = iface['crc']
-                output[name]['tx_octets'] = iface['tx_octets']
-                output[name]['rx_octets'] = iface['rx_octets']
+                output[name]["tx_discards"] = 0
+                output[name]["rx_discards"] = 0
+                output[name]["tx_errors"] = -1
+                output[name]["rx_errors"] = iface["crc"]
+                output[name]["tx_octets"] = iface["tx_octets"]
+                output[name]["rx_octets"] = iface["rx_octets"]
 
         return output
+
+    def get_probes_results(self):
+        raise NotImplemented
+
+    def get_probes_config(self):
+        raise NotImplemented
+
+    def traceroute(self):
+        raise NotImplemented
+
+    def ping(self):
+        raise NotImplemented
+
+    def rollback(self):
+        raise NotImplemented
+
+    def pre_connection_tests(self):
+        raise NotImplemented
+
+    def post_connection_tests(self):
+        raise NotImplemented
+
+    def load_template(self):
+        raise NotImplemented
+
+    def load_replace_candidate(self):
+        raise NotImplemented
+
+    def load_merge_candidate(self):
+        raise NotImplemented
+
+    def is_alive(self):
+        raise NotImplemented
+
+    def get_users(self):
+        raise NotImplemented
+
+    def get_snmp_information(self):
+        raise NotImplemented
