@@ -207,3 +207,50 @@ class SMBStaXDriver(NetworkDriver):
                 output[d["interface"]]["physical_channels"]["channel"] = values
 
         return output
+
+    def get_interfaces_counters(self):
+        """
+        Returns a dictionary of dictionaries
+
+        The first key is an interface name and the inner dictionary contains
+
+        tx_errors (int)
+        rx_errors (int)
+        tx_discards (int)
+        rx_discards (int)
+        tx_octets (int)
+        rx_octets (int)
+        tx_unicast_packets (int)
+        rx_unicast_packets (int)
+        tx_multicast_packets (int)
+        rx_multicast_packets (int)
+        tx_broadcast_packets (int)
+        rx_broadcast_packets (int)
+        """
+        output = {}
+
+        _data = napalm.base.helpers.textfsm_extractor(
+            self,
+            "statistics",
+            self.device.send_command("show interface * statistics"),
+        )
+        if _data:
+            for iface in _data:
+                name =iface['interface']
+
+                output[name] = {}
+                output[name]['tx_multicast_packets'] = iface['tx_multicast']
+                output[name]['rx_multicast_packets'] = iface['rx_multicast']
+                output[name]['tx_broadcast_packets'] = iface['tx_broadcast']
+                output[name]['rx_broadcast_packets'] = iface['rx_broadcast']
+                output[name]['tx_unicast_packets'] = iface['tx_octets']
+                output[name]['rx_unicast_packets'] = iface['rx_octets']
+                # FIXME: drops ?
+                output[name]['tx_discards'] = 0
+                output[name]['rx_discards'] = 0
+                output[name]['tx_errors'] = -1
+                output[name]['rx_errors'] = iface['crc']
+                output[name]['tx_octets'] = iface['tx_octets']
+                output[name]['rx_octets'] = iface['rx_octets']
+
+        return output
