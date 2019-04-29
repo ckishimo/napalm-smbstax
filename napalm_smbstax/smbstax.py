@@ -171,12 +171,6 @@ class SMBStaXDriver(NetworkDriver):
 
         return configs
 
-    def get_probes_results(self):
-        raise NotImplemented
-
-    def get_probes_config(self):
-        raise NotImplemented
-
     def get_optics(self):
         """
         Fetches the power usage on the various transceivers installed.
@@ -252,3 +246,109 @@ class SMBStaXDriver(NetworkDriver):
                 output[name]["rx_octets"] = iface["rx_octets"]
 
         return output
+
+    def get_lldp_neighbors(self):
+        raise NotImplemented
+
+    def get_lldp_neighbors_detail(self):
+        raise NotImplemented
+
+
+    def traceroute(self):
+        raise NotImplemented
+
+    def ping(self):
+        raise NotImplemented
+
+    def rollback(self):
+        raise NotImplemented
+
+    def load_template(self):
+        raise NotImplemented
+
+    def load_replace_candidate(self):
+        raise NotImplemented
+
+    def load_merge_candidate(self):
+        raise NotImplemented
+
+    def is_alive(self):
+        raise NotImplemented
+
+    def get_users(self):
+        raise NotImplemented
+
+    def get_snmp_information(self):
+        raise NotImplemented
+
+    def get_route_to(self):
+        raise NotImplemented
+
+    def get_probes_results(self):
+        raise NotImplemented
+
+    def get_probes_config(self):
+        raise NotImplemented
+
+    def get_ntp_stats(self):
+        raise NotImplemented
+
+    def get_ntp_servers(self):
+        raise NotImplemented
+
+    def get_ntp_peers(self):
+        raise NotImplemented
+
+    def get_network_instances(self):
+        raise NotImplemented
+
+    def get_interfaces_ip(self):
+        raise NotImplemented
+
+    def get_interfaces(self):
+        raise NotImplemented
+
+    def get_facts(self):
+        raise NotImplemented
+
+    def get_environment(self):
+        raise NotImplemented
+
+    def connection_tests(self):
+        raise NotImplemented
+
+    def compare_config(self):
+        raise NotImplemented
+
+    def commit_config(self):
+        raise NotImplemented
+
+    def discard_config(self):
+        raise NotImplemented
+
+
+
+
+    def get_firewall_policies(self):
+        raise NotImplemented
+
+    def get_bgp_neighbors_detail(self):
+        raise NotImplemented
+
+    def get_bgp_neighbors(self):
+        raise NotImplemented
+
+    def get_bgp_config(self):
+        raise NotImplemented
+
+    def pre_connection_tests(self):
+        raise NotImplemented
+
+    def post_connection_tests(self):
+        raise NotImplemented
+
+    def compliance_report(self):
+        raise NotImplemented
+
+    def get_ipv6_neighbors_table(self):
+        raise NotImplemented
