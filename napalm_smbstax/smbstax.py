@@ -247,11 +247,12 @@ class SMBStaXDriver(NetworkDriver):
 
         return output
 
-    def get_probes_results(self):
+    def get_lldp_neighbors(self):
         raise NotImplemented
 
-    def get_probes_config(self):
+    def get_lldp_neighbors_detail(self):
         raise NotImplemented
+
 
     def traceroute(self):
         raise NotImplemented
@@ -260,12 +261,6 @@ class SMBStaXDriver(NetworkDriver):
         raise NotImplemented
 
     def rollback(self):
-        raise NotImplemented
-
-    def pre_connection_tests(self):
-        raise NotImplemented
-
-    def post_connection_tests(self):
         raise NotImplemented
 
     def load_template(self):
@@ -307,28 +302,34 @@ class SMBStaXDriver(NetworkDriver):
     def get_network_instances(self):
         raise NotImplemented
 
-    def get_lldp_neighbors_detail(self):
-        raise NotImplemented
-
-    def get_lldp_neighbors(self):
-        raise NotImplemented
-
-    def get_ipv6_neighbors_table(self):
-        raise NotImplemented
-
     def get_interfaces_ip(self):
         raise NotImplemented
 
     def get_interfaces(self):
         raise NotImplemented
 
-    def get_firewall_policies(self):
-        raise NotImplemented
-
     def get_facts(self):
         raise NotImplemented
 
     def get_environment(self):
+        raise NotImplemented
+
+    def connection_tests(self):
+        raise NotImplemented
+
+    def compare_config(self):
+        raise NotImplemented
+
+    def commit_config(self):
+        raise NotImplemented
+
+    def discard_config(self):
+        raise NotImplemented
+
+
+
+
+    def get_firewall_policies(self):
         raise NotImplemented
 
     def get_bgp_neighbors_detail(self):
@@ -340,17 +341,14 @@ class SMBStaXDriver(NetworkDriver):
     def get_bgp_config(self):
         raise NotImplemented
 
-    def discard_config(self):
+    def pre_connection_tests(self):
         raise NotImplemented
 
-    def connection_tests(self):
+    def post_connection_tests(self):
         raise NotImplemented
 
     def compliance_report(self):
         raise NotImplemented
 
-    def compare_config(self):
-        raise NotImplemented
-
-    def commit_config(self):
+    def get_ipv6_neighbors_table(self):
         raise NotImplemented
