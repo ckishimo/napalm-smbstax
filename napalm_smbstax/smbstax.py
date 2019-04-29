@@ -248,7 +248,26 @@ class SMBStaXDriver(NetworkDriver):
         return output
 
     def get_lldp_neighbors(self):
-        raise NotImplemented
+        """
+        Returns a dictionary where the keys are local ports and the value
+        is a list of dictionaries with the following information
+        """
+        output = {}
+        output = {}
+        _data = napalm.base.helpers.textfsm_extractor(
+            self, "lldp-neighbors", self.device.send_command("show lldp neighbors")
+        )
+        if _data:
+            for neighbor in _data:
+                iface = neighbor["local_interface"]
+                # FIXME: This should be a list of neighbors
+                output[iface] = {}
+                output[iface]["hostname"] = neighbor["remote_system_name"]
+                output[iface]["port"] = neighbor[
+                    "remote_port_description"
+                ]
+
+        return output
 
     def get_lldp_neighbors_detail(self):
         """
@@ -262,6 +281,7 @@ class SMBStaXDriver(NetworkDriver):
         if _data:
             for neighbor in _data:
                 iface = neighbor["local_interface"]
+                # FIXME: This should be a list of neighbors
                 output[iface] = {}
                 output[iface]["parent_interface"] = ""
                 output[iface]["remote_chassis_id"] = neighbor["remote_chassis_id"]
