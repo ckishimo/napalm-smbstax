@@ -24,6 +24,10 @@ from napalm.base import NetworkDriver
 from napalm.base.exceptions import ConnectionException
 import napalm.base.helpers
 
+import os
+import sys
+from pprint import pprint
+
 
 class SMBStaXDriver(NetworkDriver):
     """Napalm driver for Microsemi switches running SMBStaX."""
@@ -166,3 +170,40 @@ class SMBStaXDriver(NetworkDriver):
             configs["running"] = output
 
         return configs
+
+    def get_probes_results(self):
+        raise NotImplemented
+
+    def get_probes_config(self):
+        raise NotImplemented
+
+    def get_optics(self):
+        """
+        Fetches the power usage on the various transceivers installed.
+        Returns a dictionary
+        """
+        output = {}
+
+        _data = napalm.base.helpers.textfsm_extractor(
+            self,
+            "optics",
+            self.device.send_command("show interface 10GigabitEthernet * transceiver"),
+        )
+        if _data:
+            # FIXME: Only 10GbE has been tested
+            # FIXME: Need to complete with the rest of information
+            for d in _data:
+                values = {}
+                values["index"] = 0
+                values["state"] = {}
+                values["state"]["input_power"] = {}
+                values["state"]["input_power"]["instant"] = 0
+                values["state"]["input_power"]["avg"] = d["current_rx"]
+                values["state"]["input_power"]["min"] = d["min_rx"]
+                values["state"]["input_power"]["max"] = d["max_rx"]
+
+                output[d["interface"]] = {}
+                output[d["interface"]]["physical_channels"] = {}
+                output[d["interface"]]["physical_channels"]["channel"] = values
+
+        return output
