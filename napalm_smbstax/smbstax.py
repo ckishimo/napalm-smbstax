@@ -285,3 +285,72 @@ class SMBStaXDriver(NetworkDriver):
 
     def get_snmp_information(self):
         raise NotImplemented
+
+    def get_route_to(self):
+        raise NotImplemented
+
+    def get_probes_results(self):
+        raise NotImplemented
+
+    def get_probes_config(self):
+        raise NotImplemented
+
+    def get_ntp_stats(self):
+        raise NotImplemented
+
+    def get_ntp_servers(self):
+        raise NotImplemented
+
+    def get_ntp_peers(self):
+        raise NotImplemented
+
+    def get_network_instances(self):
+        raise NotImplemented
+
+    def get_lldp_neighbors_detail(self):
+        raise NotImplemented
+
+    def get_lldp_neighbors(self):
+        raise NotImplemented
+
+    def get_ipv6_neighbors_table(self):
+        raise NotImplemented
+
+    def get_interfaces_ip(self):
+        raise NotImplemented
+
+    def get_interfaces(self):
+        raise NotImplemented
+
+    def get_firewall_policies(self):
+        raise NotImplemented
+
+    def get_facts(self):
+        raise NotImplemented
+
+    def get_environment(self):
+        raise NotImplemented
+
+    def get_bgp_neighbors_detail(self):
+        raise NotImplemented
+
+    def get_bgp_neighbors(self):
+        raise NotImplemented
+
+    def get_bgp_config(self):
+        raise NotImplemented
+
+    def discard_config(self):
+        raise NotImplemented
+
+    def connection_tests(self):
+        raise NotImplemented
+
+    def compliance_report(self):
+        raise NotImplemented
+
+    def compare_config(self):
+        raise NotImplemented
+
+    def commit_config(self):
+        raise NotImplemented
