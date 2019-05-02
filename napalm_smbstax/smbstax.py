@@ -23,6 +23,7 @@ from netmiko import ConnectHandler
 from napalm.base import NetworkDriver
 from napalm.base.exceptions import ConnectionException
 import napalm.base.helpers
+import re
 
 
 class SMBStaXDriver(NetworkDriver):
@@ -202,7 +203,7 @@ class SMBStaXDriver(NetworkDriver):
 
         return output
 
-    def get_interfaces_counters(self):
+    def get_interfaces_counters(self, interface=u"*"):
         """
         Return a dictionary of dictionaries.
 
@@ -223,11 +224,16 @@ class SMBStaXDriver(NetworkDriver):
         """
         output = {}
 
+        # If a list of interfaces is given using commas, replace with space
+        if "," in interface:
+            interface = re.sub(",", " ", interface)
+
         _data = napalm.base.helpers.textfsm_extractor(
-            self, "statistics", self.device.send_command("show interface * statistics")
+            self,
+            "statistics",
+            self.device.send_command("show interface %s statistics" % interface),
         )
         if _data:
-            print(_data)
             for iface in _data:
                 name = iface["type"] + " " + iface["interface"]
 
@@ -236,11 +242,10 @@ class SMBStaXDriver(NetworkDriver):
                 output[name]["rx_multicast_packets"] = iface["rx_multicast"]
                 output[name]["tx_broadcast_packets"] = iface["tx_broadcast"]
                 output[name]["rx_broadcast_packets"] = iface["rx_broadcast"]
-                output[name]["tx_unicast_packets"] = iface["tx_octets"]
-                output[name]["rx_unicast_packets"] = iface["rx_octets"]
-                # FIXME: drops ?
-                output[name]["tx_discards"] = 0
-                output[name]["rx_discards"] = 0
+                output[name]["tx_unicast_packets"] = iface["tx_packets"]
+                output[name]["rx_unicast_packets"] = iface["rx_packets"]
+                output[name]["tx_discards"] = iface["tx_drops"]
+                output[name]["rx_discards"] = iface["rx_drops"]
                 output[name]["tx_errors"] = -1
                 output[name]["rx_errors"] = iface["crc"]
                 output[name]["tx_octets"] = iface["tx_octets"]
