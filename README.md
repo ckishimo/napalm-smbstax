@@ -19,7 +19,7 @@ exit()
 
 # Output
 {
-    "1/1": {
+    "10GigabitEthernet 1/4": {
         "rx_broadcast_packets": "0",
         "rx_discards": 0,
         "rx_errors": "0",
@@ -29,23 +29,24 @@ exit()
         "tx_broadcast_packets": "11",
         "tx_discards": 0,
         "tx_errors": -1,
-        "tx_multicast_packets": "189759",
-        "tx_octets": "20564095",
-        "tx_unicast_packets": "20564095"
+        "tx_multicast_packets": "14",
+        "tx_octets": "2408",
+        "tx_unicast_packets": "2408"
     },
-    "1/10": {
+    "GigabitEthernet 1/1": {
         "rx_broadcast_packets": "0",
         "rx_discards": 0,
         "rx_errors": "0",
-        "rx_multicast_packets": "8683",
-        "rx_octets": "1111424",
-        "rx_unicast_packets": "1111424",
+        "rx_multicast_packets": "8729",
+        "rx_octets": "1117312",
+        "rx_unicast_packets": "1117312",
         "tx_broadcast_packets": "11",
         "tx_discards": 0,
         "tx_errors": -1,
-        "tx_multicast_packets": "189753",
-        "tx_octets": "20555189",
-        "tx_unicast_packets": "20555189"
+        "tx_multicast_packets": "190703",
+        "tx_octets": "20640220",
+        "tx_unicast_packets": "20640220"
     },
+    ...
 }
 ```

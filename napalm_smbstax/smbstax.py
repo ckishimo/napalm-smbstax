@@ -24,10 +24,6 @@ from napalm.base import NetworkDriver
 from napalm.base.exceptions import ConnectionException
 import napalm.base.helpers
 
-import os
-import sys
-from pprint import pprint
-
 
 class SMBStaXDriver(NetworkDriver):
     """Napalm driver for Microsemi switches running SMBStaX."""
@@ -89,6 +85,7 @@ class SMBStaXDriver(NetworkDriver):
         ip (string)
         age (float)         : Not supported
         """
+
         arp_table = list()
 
         output = self.device.send_command("show ip arp")
@@ -124,6 +121,7 @@ class SMBStaXDriver(NetworkDriver):
         moves (int)         : Not supported
         last_move (float)   : Not supported
         """
+
         mac_table = list()
 
         output = self.device.send_command("show mac address-table")
@@ -156,6 +154,7 @@ class SMBStaXDriver(NetworkDriver):
 
         The object returned is a dictionary with a key for each configuration stored.
         """
+
         configs = {"startup": "", "running": "", "candidate": ""}
         # Candidate: Device doesn't differentiate between running and startup configuration
         # this will an empty string
@@ -173,9 +172,10 @@ class SMBStaXDriver(NetworkDriver):
 
     def get_optics(self):
         """
-        Fetches the power usage on the various transceivers installed.
+        Fetch the power usage on the various transceivers installed.
         Returns a dictionary
         """
+
         output = {}
 
         _data = napalm.base.helpers.textfsm_extractor(
@@ -204,7 +204,7 @@ class SMBStaXDriver(NetworkDriver):
 
     def get_interfaces_counters(self):
         """
-        Returns a dictionary of dictionaries
+        Return a dictionary of dictionaries.
 
         The first key is an interface name and the inner dictionary contains
 
@@ -227,8 +227,9 @@ class SMBStaXDriver(NetworkDriver):
             self, "statistics", self.device.send_command("show interface * statistics")
         )
         if _data:
+            print(_data)
             for iface in _data:
-                name = iface["interface"]
+                name = iface["type"] + " " + iface["interface"]
 
                 output[name] = {}
                 output[name]["tx_multicast_packets"] = iface["tx_multicast"]

@@ -1,4 +1,5 @@
 # No spaces between values
+Value TYPE (\S+)
 Value INTERFACE (\S+)
 Value RX_PACKETS (\d+)
 Value TX_PACKETS (\d+)
@@ -22,7 +23,7 @@ Value JABBERS (\d+)
 Value FILTERED (\d+)
 
 Start
-  ^(10GigabitEthernet|GigabitEthernet)\s+${INTERFACE}\s+Statistics:
+  ^${TYPE}\s+${INTERFACE}\s+Statistics:
   ^Rx Packets:\s+${RX_PACKETS}\s+Tx Packets:\s+${TX_PACKETS}
   ^Rx Octets:\s+${RX_OCTETS}\s+Tx Octets:\s+${TX_OCTETS}
   ^Rx Unicast:\s+${RX_UNICAST}\s+Tx Unicast:\s+${TX_UNICAST}
