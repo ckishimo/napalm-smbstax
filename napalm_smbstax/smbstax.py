@@ -263,9 +263,7 @@ class SMBStaXDriver(NetworkDriver):
                 # FIXME: This should be a list of neighbors
                 output[iface] = {}
                 output[iface]["hostname"] = neighbor["remote_system_name"]
-                output[iface]["port"] = neighbor[
-                    "remote_port_description"
-                ]
+                output[iface]["port"] = neighbor["remote_port_description"]
 
         return output
 
@@ -298,25 +296,24 @@ class SMBStaXDriver(NetworkDriver):
 
         return output
 
+    def is_alive(self):
+        """Returns a flag with the connection state."""
+        # FIXME: reduce delay_factor(?)
+        # Send a carriage return
+        try:
+            output = self.device.send_command("\n")
+        except (socket.error, EOFError):
+            return 0
+
+        return 1
+
+    def get_interfaces(self):
+        raise NotImplemented
+
     def traceroute(self):
         raise NotImplemented
 
     def ping(self):
-        raise NotImplemented
-
-    def rollback(self):
-        raise NotImplemented
-
-    def load_template(self):
-        raise NotImplemented
-
-    def load_replace_candidate(self):
-        raise NotImplemented
-
-    def load_merge_candidate(self):
-        raise NotImplemented
-
-    def is_alive(self):
         raise NotImplemented
 
     def get_users(self):
@@ -328,12 +325,6 @@ class SMBStaXDriver(NetworkDriver):
     def get_route_to(self):
         raise NotImplemented
 
-    def get_probes_results(self):
-        raise NotImplemented
-
-    def get_probes_config(self):
-        raise NotImplemented
-
     def get_ntp_stats(self):
         raise NotImplemented
 
@@ -343,13 +334,7 @@ class SMBStaXDriver(NetworkDriver):
     def get_ntp_peers(self):
         raise NotImplemented
 
-    def get_network_instances(self):
-        raise NotImplemented
-
     def get_interfaces_ip(self):
-        raise NotImplemented
-
-    def get_interfaces(self):
         raise NotImplemented
 
     def get_facts(self):
@@ -358,9 +343,7 @@ class SMBStaXDriver(NetworkDriver):
     def get_environment(self):
         raise NotImplemented
 
-    def connection_tests(self):
-        raise NotImplemented
-
+    # Config related
     def compare_config(self):
         raise NotImplemented
 
@@ -370,6 +353,19 @@ class SMBStaXDriver(NetworkDriver):
     def discard_config(self):
         raise NotImplemented
 
+    def load_template(self):
+        raise NotImplemented
+
+    def load_replace_candidate(self):
+        raise NotImplemented
+
+    def load_merge_candidate(self):
+        raise NotImplemented
+
+    def rollback(self):
+        raise NotImplemented
+
+    # The following methods will not be implemented
     def get_firewall_policies(self):
         raise NotImplemented
 
@@ -392,4 +388,16 @@ class SMBStaXDriver(NetworkDriver):
         raise NotImplemented
 
     def get_ipv6_neighbors_table(self):
+        raise NotImplemented
+
+    def get_network_instances(self):
+        raise NotImplemented
+
+    def connection_tests(self):
+        raise NotImplemented
+
+    def get_probes_results(self):
+        raise NotImplemented
+
+    def get_probes_config(self):
         raise NotImplemented
